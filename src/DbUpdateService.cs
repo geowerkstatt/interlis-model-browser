@@ -66,7 +66,10 @@ public class DbUpdateService : BackgroundService
                 context.SaveChanges();
 
                 transaction.Commit();
-                logger.LogInformation("Updating ModelRepoDatabase complete. Inserted {RepositoryCount} repositories.", repositories.Count);
+                if (logger.IsEnabled(LogLevel.Information))
+                {
+                    logger.LogInformation("Updating ModelRepoDatabase complete. Inserted {RepositoryCount} repositories.", repositories.Count);
+                }
             }
             else
             {
@@ -89,7 +92,11 @@ public class DbUpdateService : BackgroundService
             await UpdateModelRepoDatabase().ConfigureAwait(false);
 
             var delayTime = GetTimeSpanUntilPreferedTime(DateTime.Now, preferredTime);
-            logger.LogInformation("Next ModelRepoDatabase update in {DelayTime}", delayTime);
+            if (logger.IsEnabled(LogLevel.Information))
+            {
+                logger.LogInformation("Next ModelRepoDatabase update in {DelayTime}", delayTime);
+            }
+
             await Task.Delay(delayTime, stoppingToken).ConfigureAwait(false);
         }
     }

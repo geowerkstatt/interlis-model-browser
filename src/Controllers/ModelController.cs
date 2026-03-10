@@ -29,7 +29,10 @@ public class ModelController : Controller
     [SwaggerResponse(StatusCodes.Status204NoContent, "The INTERLIS model for the requested md5 and name combination does not exist. No content returned.", ContentTypes = new[] { "application/json" })]
     public Model? ModelDetails(string md5, string name)
     {
-        logger.LogDebug("Get details for Model with hash <{MD5}> and name <{Name}>.", md5.EscapeNewLines(), name.EscapeNewLines());
+        if (logger.IsEnabled(LogLevel.Debug))
+        {
+            logger.LogDebug("Get details for Model with hash <{MD5}> and name <{Name}>.", md5.EscapeNewLines(), name.EscapeNewLines());
+        }
 
         var model = context.Models
             .Include(m => m.ModelRepository)
