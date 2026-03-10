@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModelRepoBrowser.Crawler;
 using ModelRepoBrowser.Models;
@@ -13,7 +14,7 @@ namespace ModelRepoBrowser;
 [TestClass]
 public class RepositoryCrawlerTest
 {
-    private Mock<ILogger<RepositoryCrawler>> loggerMock;
+    private FakeLogger<RepositoryCrawler> logger;
     private Mock<IHttpClientFactory> httpClientFactory;
     private RepositoryCrawler repositoryCrawler;
     private MockHttpMessageHandler mockHttp;
@@ -52,19 +53,18 @@ public class RepositoryCrawlerTest
 
     private void SetupRepositoryCrawlerInstance(HttpClient httpClient)
     {
-        loggerMock = new Mock<ILogger<RepositoryCrawler>>();
+        logger = new FakeLogger<RepositoryCrawler>();
         httpClientFactory = new Mock<IHttpClientFactory>();
         httpClientFactory
             .Setup(cf => cf.CreateClient(""))
             .Returns(httpClient);
-        repositoryCrawler = new RepositoryCrawler(loggerMock.Object, httpClientFactory.Object);
+        repositoryCrawler = new RepositoryCrawler(logger, httpClientFactory.Object);
     }
 
     [TestCleanup]
     public void Cleanup()
     {
         httpClientFactory.VerifyAll();
-        loggerMock.VerifyAll();
     }
 
     [TestMethod]
@@ -85,7 +85,7 @@ public class RepositoryCrawlerTest
         var result = await repositoryCrawler.CrawlModelRepositories(new RepositoryCrawlerOptions { RootRepositoryUri = "https://undefined.models.testdata" });
         Assert.IsNotNull(result);
         result.AssertCount(0);
-        loggerMock.Verify(LogLevel.Error, "Analysis of https://undefined.models.testdata/ failed.", Times.Once());
+        Assert.AreEqual(1, logger.Collector.GetSnapshot().Count(l => l.Level == LogLevel.Error && l.Message.Contains("Analysis of https://undefined.models.testdata/ failed.")));
     }
 
     [TestMethod]
@@ -98,7 +98,7 @@ public class RepositoryCrawlerTest
             .AssertContains("https://models.multiparent.testdata/")
             .AssertContains("https://models.geo.admin.testdata/")
             .AssertCount(3);
-        loggerMock.Verify(LogLevel.Warning, "Could not analyse https://models.interlis.testdata/ilidata.xml.", Times.Once());
+        Assert.AreEqual(1, logger.Collector.GetSnapshot().Count(l => l.Level == LogLevel.Warning && l.Message.Contains("Could not analyse https://models.interlis.testdata/ilidata.xml.")));
     }
 
     private void AssertModelsInterlisCh(Repository repository)
@@ -394,8 +394,8 @@ public class RepositoryCrawlerTest
             .AssertContains("https://models.interlis.testdata/")
             .AssertCount(1);
 
-        loggerMock.Verify(LogLevel.Warning, "Could not analyse https://models.interlis.testdata/ilidata.xml.", Times.Once());
-        loggerMock.Verify(LogLevel.Error, "Analysis of https://models.geo.admin.testdata/ failed.", Times.Once());
-        loggerMock.Verify(LogLevel.Error, "Analysis of https://models.multiparent.testdata/ failed.", Times.Once());
+        Assert.AreEqual(1, logger.Collector.GetSnapshot().Count(l => l.Level == LogLevel.Warning && l.Message.Contains("Could not analyse https://models.interlis.testdata/ilidata.xml.")));
+        Assert.AreEqual(1, logger.Collector.GetSnapshot().Count(l => l.Level == LogLevel.Error && l.Message.Contains("Analysis of https://models.geo.admin.testdata/ failed.")));
+        Assert.AreEqual(1, logger.Collector.GetSnapshot().Count(l => l.Level == LogLevel.Error && l.Message.Contains("Analysis of https://models.multiparent.testdata/ failed.")));
     }
 }
