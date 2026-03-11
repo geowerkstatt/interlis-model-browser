@@ -52,18 +52,6 @@
     "cy:run": "cypress run",
     "cy": "cypress open"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "prettier"
-    ],
-    "rules": {
-      "prettier/prettier": "error"
-    },
-    "plugins": [
-      "prettier"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
