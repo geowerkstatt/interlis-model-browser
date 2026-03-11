@@ -179,22 +179,24 @@ export function Home() {
                 label={t("search-instructions")}
                 variant="outlined"
                 {...register("searchInput")}
-                InputProps={{
-                  ...params.InputProps,
-                  style: {
-                    padding: 10,
+                slotProps={{
+                  input: {
+                    ...params.InputProps,
+                    style: {
+                      padding: 10,
+                    },
+                    startAdornment: <SearchIcon color="disabled" />,
+                    endAdornment: (
+                      <Tooltip title={t("reset-search")}>
+                        <IconButton
+                          sx={{ visibility: watch("searchInput") !== "" || models?.length > 0 ? "visible" : "hidden" }}
+                          onClick={clear}
+                        >
+                          <ClearIcon />
+                        </IconButton>
+                      </Tooltip>
+                    ),
                   },
-                  startAdornment: <SearchIcon color="disabled" />,
-                  endAdornment: (
-                    <Tooltip title={t("reset-search")}>
-                      <IconButton
-                        sx={{ visibility: watch("searchInput") !== "" || models?.length > 0 ? "visible" : "hidden" }}
-                        onClick={clear}
-                      >
-                        <ClearIcon />
-                      </IconButton>
-                    </Tooltip>
-                  ),
                 }}
               />
             )}

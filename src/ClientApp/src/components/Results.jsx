@@ -199,7 +199,6 @@ export function Results({ models, repositoryTree, searchUrl, filterDefaultValues
               disableColumnFilter
               disableDensitySelector
               disableRowSelectionOnClick
-              autoHeight
               initialState={{
                 columns: {
                   columnVisibilityModel: Object.assign(

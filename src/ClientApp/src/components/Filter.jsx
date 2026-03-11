@@ -16,7 +16,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { TreeView } from "@mui/x-tree-view/TreeView";
+import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import { SchemaLanguages } from "./SchemaLanguages";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -152,7 +152,7 @@ export function Filter(props) {
   }
 
   const renderTree = (repositoryTree) => (
-    <TreeItem key={repositoryTree.name} nodeId={repositoryTree.name}>
+    <TreeItem key={repositoryTree.name} itemId={repositoryTree.name}>
       {repositoryTree.models.length > 0 && (
         <FormGroup>
           <FormControlLabel
@@ -206,9 +206,9 @@ export function Filter(props) {
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
           <Box>
             <Typography variant="h6"> {t("model-repositories")}</Typography>
-            <TreeView sx={{ marginLeft: -2 }} expanded={getAllRepoNames(repositoryTree)}>
+            <SimpleTreeView sx={{ marginLeft: -2 }} expandedItems={getAllRepoNames(repositoryTree)}>
               {renderTree(repositoryTree)}
-            </TreeView>
+            </SimpleTreeView>
           </Box>
           <Box>
             <Typography variant="h6">{t("issuer")}</Typography>

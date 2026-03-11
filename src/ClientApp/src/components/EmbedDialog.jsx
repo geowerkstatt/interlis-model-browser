@@ -101,8 +101,8 @@ export function EmbedDialog(props) {
           <TextField
             margin="dense"
             onChange={(e) => setWidth(e.target.value)}
-            InputProps={{
-              endAdornment: <InputAdornment position="start">px</InputAdornment>,
+            slotProps={{
+              input: { endAdornment: <InputAdornment position="start">px</InputAdornment> },
             }}
             value={width}
             label={t("width")}
@@ -113,8 +113,8 @@ export function EmbedDialog(props) {
           <TextField
             margin="dense"
             onChange={(e) => setHeight(e.target.value)}
-            InputProps={{
-              endAdornment: <InputAdornment position="start">px</InputAdornment>,
+            slotProps={{
+              input: { endAdornment: <InputAdornment position="start">px</InputAdornment> },
             }}
             value={height}
             label={t("height")}
