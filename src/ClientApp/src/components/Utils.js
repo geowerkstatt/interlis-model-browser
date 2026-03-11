@@ -2,10 +2,10 @@ export const getAllModels = (repositoryNode) => {
   const modelRepository = repositoryNode.title + " [" + repositoryNode.name + "]";
 
   return [
-    ...repositoryNode.models?.map((m) => {
+    ...(repositoryNode.models?.map((m) => {
       m.modelRepository = modelRepository;
       return m;
-    }),
+    }) ?? []),
     ...repositoryNode.subsidiarySites.flatMap((r) => getAllModels(r)),
   ];
 };

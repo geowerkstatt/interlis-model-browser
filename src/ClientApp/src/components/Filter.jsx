@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Autocomplete,
   Box,
@@ -102,7 +102,6 @@ export function Filter(props) {
       handleSubmit(onSubmit)();
       setFilterApplied(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateIfAllChecked = (fieldName, optionsArray, setter) => {
@@ -110,15 +109,15 @@ export function Filter(props) {
   };
 
   const allChecked = (fieldName, optionsArray) =>
-    Object.entries(optionsArray).every(([k, v]) => getValues(fieldName + k) === true);
+    Object.entries(optionsArray).every(([k]) => getValues(fieldName + k) === true);
 
   const allSame = (fieldName, optionsArray) => {
-    return Object.entries(optionsArray).every(([k, v]) => getValues(fieldName + k) === getValues(fieldName + 0));
+    return Object.entries(optionsArray).every(([k]) => getValues(fieldName + k) === getValues(fieldName + 0));
   };
 
   const checkAllSchemaLanguage = (checked) => {
     setAllSchemaLanguageSelected(checked);
-    Object.entries(schemaLanguageOptions).forEach(([k, v]) => {
+    Object.entries(schemaLanguageOptions).forEach(([k]) => {
       setValue("schemaLanguage" + k, checked);
     });
     checked ? setValue("schemaLanguage", null) : setValue("schemaLanguage", []);
@@ -126,7 +125,7 @@ export function Filter(props) {
 
   const checkAllIssuer = (checked) => {
     setAllIssuerSelected(checked);
-    Object.entries(issuerOptions).forEach(([k, v]) => {
+    Object.entries(issuerOptions).forEach(([k]) => {
       setValue("issuer" + k, checked);
     });
     checked ? setValue("issuer", null) : setValue("issuer", []);
@@ -257,7 +256,7 @@ export function Filter(props) {
           </Box>
           <Box>
             {schemaLanguageOptions && schemaLanguageOptions?.length > 0 && (
-              <React.Fragment>
+              <>
                 <Typography variant="h6"> {t("schema-language")}</Typography>
                 <FormGroup>
                   <FormControlLabel
@@ -302,7 +301,7 @@ export function Filter(props) {
                     />
                   </FormGroup>
                 ))}
-              </React.Fragment>
+              </>
             )}
           </Box>
         </Stack>

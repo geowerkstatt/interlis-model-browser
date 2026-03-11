@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { Routes, Route } from "react-router";
 import { Layout } from "./components/Layout";
 import { Home } from "./components/Home";
