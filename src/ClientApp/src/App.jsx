@@ -69,7 +69,7 @@ export default function App() {
         <CssBaseline />
         <Layout>
           <Routes>
-            <Route exact path="/" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="/detail/:md5/:name" element={<Detail />} />
             <Route path="*" element={<Home />} />
           </Routes>
