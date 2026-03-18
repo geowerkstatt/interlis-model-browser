@@ -1,31 +1,27 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModelRepoBrowser.Controllers;
 using ModelRepoBrowser.TestHelpers;
-using Moq;
 
 namespace ModelRepoBrowser;
 
 [TestClass]
 public class SearchControllerTest
 {
-    private Mock<ILogger<SearchController>> loggerMock;
     private RepoBrowserContext context;
     private SearchController controller;
 
     [TestInitialize]
     public void TestInitialize()
     {
-        loggerMock = new Mock<ILogger<SearchController>>();
         context = ContextFactory.CreateContext();
-        controller = new SearchController(loggerMock.Object, context);
+        controller = new SearchController(new FakeLogger<SearchController>(), context);
     }
 
     [TestCleanup]
     public void TestCleanup()
     {
         context.Dispose();
-        loggerMock.VerifyAll();
     }
 
     [TestMethod]
@@ -210,7 +206,7 @@ public class SearchControllerTest
     {
         var searchResult = await controller.Search("entUCK", new string[] { "relationships" });
         Assert.IsNotNull(searchResult);
-        Assert.AreEqual(searchResult.SubsidiarySites.Single().SubsidiarySites.Single().Name, "relationships");
+        Assert.AreEqual("relationships", searchResult.SubsidiarySites.Single().SubsidiarySites.Single().Name);
         searchResult.GetAllModels().AssertCount(1)
         .AssertSingleItem(m => m.Id == 27, m => Assert.AreEqual("deposit", m.Name))
         .AssertSingleItem(m => m.Id == 27, m => Assert.AreEqual("Daniela.Hand26@hotmail.com", m.Issuer))

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation, useParams } from "react-router";
 import { Box, Button, CircularProgress, Chip, Stack, TextField, Typography } from "@mui/material";
 import CloudQueueIcon from "@mui/icons-material/CloudQueue";
 import SellIcon from "@mui/icons-material/Sell";
@@ -194,9 +194,11 @@ export function Detail() {
               rows={12}
               fullWidth
               label={t("model-preview")}
-              inputProps={{ style: { fontSize: 12, fontFamily: "'Courier New', monospace" } }}
-              InputLabelProps={{ style: { fontSize: 22 } }}
-              InputProps={{ readOnly: true, style: { fontSize: 22 } }}
+              slotProps={{
+                htmlInput: { style: { fontSize: 12, fontFamily: "'Courier New', monospace" } },
+                inputLabel: { style: { fontSize: 22 } },
+                input: { readOnly: true, style: { fontSize: 22 } },
+              }}
               value={model.fileContent?.content ?? t("no-model-preview")}
               focused={false}
             />

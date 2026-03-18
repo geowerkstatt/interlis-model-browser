@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CodeIcon from "@mui/icons-material/Code";
 import {
   AppBar,
@@ -59,8 +59,8 @@ export function Layout(props) {
                 sx={{ ml: 3, color: "white", backgroundColor: "none" }}
                 value={i18n.language}
                 onChange={(e) => i18n.changeLanguage(e.target.value)}
-                inputProps={{
-                  styles: { color: "white" },
+                slotProps={{
+                  input: { styles: { color: "white" } },
                 }}
               >
                 <MenuItem value={"de"}>DE</MenuItem>

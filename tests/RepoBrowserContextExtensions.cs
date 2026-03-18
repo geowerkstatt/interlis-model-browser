@@ -10,12 +10,11 @@ public static class RepoBrowserContextExtensions
     {
         using var transaction = context.Database.BeginTransaction();
 
-        // Set Bogus Data System Clock
-        Bogus.DataSets.Date.SystemClock = () => DateTime.Parse("01.01.2022 00:00:00", new CultureInfo("de_CH", false));
+        var referenceDate = DateTime.Parse("01.01.2022 00:00:00", new CultureInfo("de_CH", false));
 
         var schemaLanguages = new[] { "ili2_4", "ili1", "ili2_2", "ili2_3" };
 
-        var fakeRepositories = new Faker<Repository>()
+        var fakeRepositories = new Faker<Repository>().UseDateTimeReference(referenceDate)
             .StrictMode(true)
             .RuleFor(r => r.HostNameId, f => f.Internet.DomainName())
             .RuleFor(r => r.Uri, f => new Uri(f.Internet.Url()))
@@ -43,7 +42,7 @@ public static class RepoBrowserContextExtensions
             child.ParentSites.Add(repositories[9]);
         }
 
-        var fakeInterlisFile = new Faker<InterlisFile>()
+        var fakeInterlisFile = new Faker<InterlisFile>().UseDateTimeReference(referenceDate)
             .StrictMode(true)
             .RuleFor(f => f.MD5, f => f.Random.Hash(32))
             .RuleFor(f => f.Content, f => f.Lorem.Lines(f.Random.Int(10, 50)))
@@ -55,7 +54,7 @@ public static class RepoBrowserContextExtensions
 
         var modelIds = 1;
         var modelRange = Enumerable.Range(modelIds, 100);
-        var fakeModels = new Faker<Model>()
+        var fakeModels = new Faker<Model>().UseDateTimeReference(referenceDate)
             .StrictMode(true)
             .RuleFor(m => m.Id, f => modelIds++)
             .RuleFor(m => m.MD5, f => f.Random.Hash(32))
@@ -82,7 +81,7 @@ public static class RepoBrowserContextExtensions
 
         var catalogIds = 1;
         var catalogRange = Enumerable.Range(catalogIds, 20);
-        var fakeCatalogs = new Faker<Catalog>()
+        var fakeCatalogs = new Faker<Catalog>().UseDateTimeReference(referenceDate)
             .StrictMode(true)
             .RuleFor(c => c.CatalogId, f => catalogIds++)
             .RuleFor(c => c.Identifier, f => f.Random.Word())

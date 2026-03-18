@@ -50,7 +50,10 @@ public class SearchController : ControllerBase
         [FromQuery] DateOnly? publishedFrom = null,
         [FromQuery] DateOnly? publishedTo = null)
     {
-        logger.LogInformation("Search with query <{SearchQuery}>", query.EscapeNewLines());
+        if (logger.IsEnabled(LogLevel.Information))
+        {
+            logger.LogInformation("Search with query <{SearchQuery}>", query.EscapeNewLines());
+        }
 
         var trimmedQuery = string.IsNullOrEmpty(query) ? "" : query.Trim();
 
@@ -135,7 +138,10 @@ public class SearchController : ControllerBase
     [SwaggerResponse(StatusCodes.Status400BadRequest, "The server cannot process the request due to invalid or malformed request.", typeof(ProblemDetails), ContentTypes = new[] { "application/json" })]
     public async Task<IEnumerable<string>> GetSearchSuggestions([FromQuery] string? query, [FromQuery] string[]? repositoryNames = null, [FromQuery] string[]? issuers = null, [FromQuery] string[]? schemaLanguages = null, [FromQuery] string[]? dependsOnModels = null)
     {
-        logger.LogDebug("Get search options for <{SearchQuery}>", query.EscapeNewLines());
+        if (logger.IsEnabled(LogLevel.Debug))
+        {
+            logger.LogDebug("Get search options for <{SearchQuery}>", query.EscapeNewLines());
+        }
 
         var trimmedQuery = query?.Trim();
         if (string.IsNullOrEmpty(trimmedQuery))

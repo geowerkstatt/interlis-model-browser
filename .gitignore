@@ -423,3 +423,5 @@ src/ClientApp/.env.production.local
 src/ClientApp/npm-debug.log*
 src/ClientApp/yarn-debug.log*
 src/ClientApp/yarn-error.log*
+
+.idea/

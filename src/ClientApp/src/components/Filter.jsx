@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Autocomplete,
   Box,
@@ -16,7 +16,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { TreeView } from "@mui/x-tree-view/TreeView";
+import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import { SchemaLanguages } from "./SchemaLanguages";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -102,7 +102,6 @@ export function Filter(props) {
       handleSubmit(onSubmit)();
       setFilterApplied(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateIfAllChecked = (fieldName, optionsArray, setter) => {
@@ -110,15 +109,15 @@ export function Filter(props) {
   };
 
   const allChecked = (fieldName, optionsArray) =>
-    Object.entries(optionsArray).every(([k, v]) => getValues(fieldName + k) === true);
+    Object.entries(optionsArray).every(([k]) => getValues(fieldName + k) === true);
 
   const allSame = (fieldName, optionsArray) => {
-    return Object.entries(optionsArray).every(([k, v]) => getValues(fieldName + k) === getValues(fieldName + 0));
+    return Object.entries(optionsArray).every(([k]) => getValues(fieldName + k) === getValues(fieldName + 0));
   };
 
   const checkAllSchemaLanguage = (checked) => {
     setAllSchemaLanguageSelected(checked);
-    Object.entries(schemaLanguageOptions).forEach(([k, v]) => {
+    Object.entries(schemaLanguageOptions).forEach(([k]) => {
       setValue("schemaLanguage" + k, checked);
     });
     checked ? setValue("schemaLanguage", null) : setValue("schemaLanguage", []);
@@ -126,7 +125,7 @@ export function Filter(props) {
 
   const checkAllIssuer = (checked) => {
     setAllIssuerSelected(checked);
-    Object.entries(issuerOptions).forEach(([k, v]) => {
+    Object.entries(issuerOptions).forEach(([k]) => {
       setValue("issuer" + k, checked);
     });
     checked ? setValue("issuer", null) : setValue("issuer", []);
@@ -153,7 +152,7 @@ export function Filter(props) {
   }
 
   const renderTree = (repositoryTree) => (
-    <TreeItem key={repositoryTree.name} nodeId={repositoryTree.name}>
+    <TreeItem key={repositoryTree.name} itemId={repositoryTree.name}>
       {repositoryTree.models.length > 0 && (
         <FormGroup>
           <FormControlLabel
@@ -207,9 +206,9 @@ export function Filter(props) {
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
           <Box>
             <Typography variant="h6"> {t("model-repositories")}</Typography>
-            <TreeView sx={{ marginLeft: -2 }} expanded={getAllRepoNames(repositoryTree)}>
+            <SimpleTreeView sx={{ marginLeft: -2 }} expandedItems={getAllRepoNames(repositoryTree)}>
               {renderTree(repositoryTree)}
-            </TreeView>
+            </SimpleTreeView>
           </Box>
           <Box>
             <Typography variant="h6">{t("issuer")}</Typography>
@@ -257,7 +256,7 @@ export function Filter(props) {
           </Box>
           <Box>
             {schemaLanguageOptions && schemaLanguageOptions?.length > 0 && (
-              <React.Fragment>
+              <>
                 <Typography variant="h6"> {t("schema-language")}</Typography>
                 <FormGroup>
                   <FormControlLabel
@@ -302,7 +301,7 @@ export function Filter(props) {
                     />
                   </FormGroup>
                 ))}
-              </React.Fragment>
+              </>
             )}
           </Box>
         </Stack>

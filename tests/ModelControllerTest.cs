@@ -1,30 +1,26 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModelRepoBrowser.Controllers;
-using Moq;
 
 namespace ModelRepoBrowser;
 
 [TestClass]
 public class ModelControllerTest
 {
-    private Mock<ILogger<ModelController>> loggerMock;
     private RepoBrowserContext context;
     private ModelController controller;
 
     [TestInitialize]
     public void TestInitialize()
     {
-        loggerMock = new Mock<ILogger<ModelController>>();
         context = ContextFactory.CreateContext();
-        controller = new ModelController(loggerMock.Object, context);
+        controller = new ModelController(new FakeLogger<ModelController>(), context);
     }
 
     [TestCleanup]
     public void TestCleanup()
     {
         context.Dispose();
-        loggerMock.VerifyAll();
     }
 
     [TestMethod]

@@ -88,7 +88,11 @@ public class RepositoryCrawler : IRepositoryCrawler
     {
         if (IsIgnored(rootRepositoryUri, ignoreList))
         {
-            logger.LogDebug($"Repository <{rootRepositoryUri}> is ignored");
+            if (logger.IsEnabled(LogLevel.Debug))
+            {
+                logger.LogDebug("Repository <{RepositoryUri}> is ignored", rootRepositoryUri);
+            }
+
             return null;
         }
 
@@ -244,7 +248,11 @@ public class RepositoryCrawler : IRepositoryCrawler
 
     private async Task<InterlisFile?> FetchInterlisFile(Uri fileUri)
     {
-        logger.LogDebug("Download INTERLIS file <{URL}>", fileUri);
+        if (logger.IsEnabled(LogLevel.Debug))
+        {
+            logger.LogDebug("Download INTERLIS file <{URL}>", fileUri);
+        }
+
         try
         {
             var stream = await GetStreamFromUrl(fileUri).ConfigureAwait(false);

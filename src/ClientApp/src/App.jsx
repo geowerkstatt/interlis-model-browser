@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { Routes, Route } from "react-router";
 import { Layout } from "./components/Layout";
 import { Home } from "./components/Home";
@@ -69,7 +69,7 @@ export default function App() {
         <CssBaseline />
         <Layout>
           <Routes>
-            <Route exact path="/" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="/detail/:md5/:name" element={<Detail />} />
             <Route path="*" element={<Home />} />
           </Routes>

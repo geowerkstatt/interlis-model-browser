@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useSearchParams, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useSearchParams, useLocation } from "react-router";
 import { Autocomplete, Box, Button, CircularProgress, IconButton, TextField, Tooltip, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import SearchIcon from "@mui/icons-material/Search";
@@ -130,14 +130,14 @@ export function Home() {
   // On first load the hideFilter state and all permanent filters should be set for all following requests.
   useEffect(() => {
     setHideFilter(searchParams.get("hideFilter"));
-    !!searchParams.get(FilterValues.SchemaLanguages)
+    searchParams.get(FilterValues.SchemaLanguages)
       ? setSchemaLanguages(searchParams.getAll(FilterValues.SchemaLanguages))
       : setSchemaLanguages([]);
-    !!searchParams.get(FilterValues.Issuers) ? setIssuers(searchParams.getAll(FilterValues.Issuers)) : setIssuers([]);
-    !!searchParams.get(FilterValues.RepositoryNames)
+    searchParams.get(FilterValues.Issuers) ? setIssuers(searchParams.getAll(FilterValues.Issuers)) : setIssuers([]);
+    searchParams.get(FilterValues.RepositoryNames)
       ? setRepositoryNames(searchParams.getAll(FilterValues.RepositoryNames))
       : setRepositoryNames([]);
-    !!searchParams.get(FilterValues.DependsOnModels)
+    searchParams.get(FilterValues.DependsOnModels)
       ? setDependsOnModels(searchParams.getAll(FilterValues.DependsOnModels))
       : setDependsOnModels([]);
     if (inputValue !== "") {
@@ -149,7 +149,6 @@ export function Home() {
       }
     }
     setFilterDefaultValues(location.state?.filterDefaultValues || null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -180,22 +179,24 @@ export function Home() {
                 label={t("search-instructions")}
                 variant="outlined"
                 {...register("searchInput")}
-                InputProps={{
-                  ...params.InputProps,
-                  style: {
-                    padding: 10,
+                slotProps={{
+                  input: {
+                    ...params.InputProps,
+                    style: {
+                      padding: 10,
+                    },
+                    startAdornment: <SearchIcon color="disabled" />,
+                    endAdornment: (
+                      <Tooltip title={t("reset-search")}>
+                        <IconButton
+                          sx={{ visibility: watch("searchInput") !== "" || models?.length > 0 ? "visible" : "hidden" }}
+                          onClick={clear}
+                        >
+                          <ClearIcon />
+                        </IconButton>
+                      </Tooltip>
+                    ),
                   },
-                  startAdornment: <SearchIcon color="disabled" />,
-                  endAdornment: (
-                    <Tooltip title={t("reset-search")}>
-                      <IconButton
-                        sx={{ visibility: watch("searchInput") !== "" || models?.length > 0 ? "visible" : "hidden" }}
-                        onClick={clear}
-                      >
-                        <ClearIcon />
-                      </IconButton>
-                    </Tooltip>
-                  ),
                 }}
               />
             )}
