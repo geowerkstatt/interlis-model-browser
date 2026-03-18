@@ -59,7 +59,12 @@ public class SearchController : ControllerBase
 
         try
         {
-            context.SearchQueries.Add(new() { Query = trimmedQuery });
+            context.SearchQueries.Add(new()
+            {
+                Query = trimmedQuery,
+                SearchedAt = DateTime.UtcNow,
+                Language = Request.Headers.AcceptLanguage.FirstOrDefault(),
+            });
             context.SaveChanges();
         }
         catch (DbUpdateException ex)
