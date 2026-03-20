@@ -63,7 +63,9 @@ public class SearchController : ControllerBase
             {
                 Query = trimmedQuery,
                 SearchedAt = DateTime.UtcNow,
-                Language = Request?.Headers.AcceptLanguage.FirstOrDefault(),
+                Language = Request?.GetTypedHeaders().AcceptLanguage
+                    .OrderByDescending(l => l.Quality ?? 1.0)
+                    .FirstOrDefault()?.Value.Value,
             });
             context.SaveChanges();
         }
